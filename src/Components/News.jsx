@@ -10,14 +10,14 @@ const News = (props) => {
   const [page, setPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
 
-  const uppercase=(word)=>{
-    let capital = word.slice(0,1).toUpperCase();
-    return capital+word.slice(1)
+  const uppercase = (word) => {
+    let capital = word.slice(0, 1).toUpperCase();
+    return capital + word.slice(1)
   }
 
   const getNews = async () => {
     setLoading(true);
-    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${props.category}&apiKey=${props.apikey}&page=${page}&pageSize=${props.pagesize}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page}&pageSize=${props.pagesize}`;
     let data = await fetch(url);
     let parsedData = await data.json();
     // let results = parsedData.articles;
@@ -33,9 +33,8 @@ const News = (props) => {
   }, []);
 
   const fetchData = async () => {
-    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${
-      props.category
-    }&apiKey=${props.apikey}&page=${page + 1}&pageSize=${props.pagesize}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category
+      }&apiKey=${props.apikey}&page=${page + 1}&pageSize=${props.pagesize}`;
 
     setPage(page + 1);
 
@@ -50,22 +49,22 @@ const News = (props) => {
   return (
     <>
 
-    <h1 className="text-black text-center text-[3rem] font-semibold drop-shadow-2xl  ">News<span className="text-[#3892b0] ">ify - </span> {`${uppercase(props.category)}`}</h1>
+      <h1 className="text-black  bg-[#c0c0ce44] text-center  width-[100%] text-[3rem] font-semibold drop-shadow-2xl  ">News<span className="text-[#3892b0] ">ify - </span> {`${uppercase(props.category)}`}</h1>
 
       {loading && <Loading />}
 
-        <InfiniteScroll
-          dataLength={results.length} 
-          next={fetchData}
-          hasMore={results.length !== totalResults}
-          loader={<Loading />}
-          endMessage={
-            <p style={{ textAlign: "center" }}>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }
-        >
-          <div className="w-full flex justify-center">
+      <InfiniteScroll
+        dataLength={results.length}
+        next={fetchData}
+        hasMore={results.length !== totalResults}
+        loader={<Loading />}
+        endMessage={
+          <p style={{ textAlign: "center" }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+      >
+        <div className="w-full flex justify-center">
           <div className="cards m-6 flex flex-wrap justify-center ">
             {results.map((article) => {
               return (
@@ -73,15 +72,15 @@ const News = (props) => {
                   <NewsCard
                     title={article?.title}
                     link={article.url}
-                    description={article?.description}
+                    description={ article?.description}
                     image_url={article?.urlToImage}
-                    date= {article?.publishedAt}
+                    date={article?.publishedAt}
                   />
                 </div>
               );
             })}
           </div>
-      </div>
+        </div>
       </InfiniteScroll>
     </>
   );
